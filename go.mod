@@ -3,13 +3,13 @@ module github.com/istiyawan/wanip
 go 1.17
 
 require (
-	github.com/PuerkitoBio/goquery v1.8.0 // indirect
+	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/antchfx/htmlquery v1.2.3 // indirect
 	github.com/antchfx/xmlquery v1.2.4 // indirect
 	github.com/antchfx/xpath v1.1.8 // indirect
-	github.com/chromedp/cdproto v0.0.0-20220131204822-e6abebe7b8cd // indirect
-	github.com/chromedp/chromedp v0.7.6 // indirect
+	github.com/chromedp/cdproto v0.0.0-20220131204822-e6abebe7b8cd
+	github.com/chromedp/chromedp v0.7.6
 	github.com/chromedp/sysutil v1.0.0 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
