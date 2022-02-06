@@ -8,6 +8,12 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+var userAgents = []strings("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36")
+
+func randomUserAgent() {
+
+}
+
 func check(err error) {
 	if err != nil {
 		fmt.Println(err)
@@ -24,7 +30,17 @@ func writeFile(data, filename string) {
 }
 
 func main() {
+
+	worklist := make(chan []string)
 	url := "https://www.amazon.com/s?k=keyboard&crid=ICSAKQ8GAW3D&sprefix=keybo%2Caps%2C592&ref=nb_sb_noss_2"
+	go func() {
+		worklist <- []string{"https://www.amazon.com/s?k=keyboard&crid=ICSAKQ8GAW3D&sprefix=keybo%2Caps%2C592&ref=nb_sb_noss_2"}
+	}()
+
+	seen := make(map[string]bool)
+
+	list := worklist
+
 	var Brand string
 
 	response, err := http.Get(url)
