@@ -41,6 +41,17 @@ func main() {
 
 	list := worklist
 
+	for _, link := range list{
+		if !seen[link]{
+			seen[link] = true
+
+			go func(link string, baseUrl){
+
+			}
+		}
+
+	}
+
 	var Brand string
 
 	response, err := http.Get(url)
