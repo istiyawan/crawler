@@ -41,13 +41,16 @@ func main() {
 
 	list := worklist
 
-	for _, link := range list{
-		if !seen[link]{
+	for _, link := range list {
+		if !seen[link] {
 			seen[link] = true
 
-			go func(link string, baseUrl){
-
-			}
+			go func(link string, baseUrl string) {
+				foundLinks := Crawl(link, url)
+				if foundLinks != nil {
+					worklist <- foundLinks
+				}
+			}()
 		}
 
 	}
