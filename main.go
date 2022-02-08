@@ -12,15 +12,14 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-type FoundUrls struct{
-	
+type FoundUrls struct {
 	ProductDetails string
-	Asin string
-	Brand string 
-	Price string 
-	Ratings string 
-	Sales string 
-
+	Asin           string
+	Brand          string
+	Price          string
+	Ratings        string
+	Sales          string
+	SalesGraph     string
 }
 
 var userAgents = []string{"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36"}
@@ -34,8 +33,8 @@ func randomUserAgent() string {
 func discoverLinks(response *http.Response, baseURL string) []string {
 	if response != nil {
 		doc, _ := goquery.NewDocumentFromResponse(response)
-		// foundUrls := []string{}
-		foundUrls := &FoundUrls{} 
+		foundUrls := []string{}
+		// foundUrls := &FoundUrls{}
 
 		if doc != nil {
 			doc.Find("div.s-result-item ").Each(func(index int, item *goquery.Selection) {
@@ -43,45 +42,44 @@ func discoverLinks(response *http.Response, baseURL string) []string {
 				//interasi ke dalam link tiap item
 				mainUrl, _ := item.Find("a.a-link-normal").Attr("href")
 
-				// foundUrls = append(foundUrls, mainUrl)
+				foundUrls = append(foundUrls, mainUrl)
+				// detailUrl := "https://www.amazon.com" + mainUrl
+				//
+				// detailResponse, err := http.Get(detailUrl)
+				// check(err)
+				//
+				// if detailResponse.StatusCode > 400 {
+				// 	fmt.Println("Status Code: ", response.StatusCode)
+				// }
+				//
+				// detailDoc, err := goquery.NewDocumentFromReader(detailResponse.Body)
+				// check(err)
 
-				detailUrl := "https://www.amazon.com" + mainUrl
+				// ambil detail data tiap item
+				// title := detailDoc.Find("span.a-size-large").Text()
+				// asin, _ := detailDoc.Find("div#averageCustomerReviews").Attr("data-asin")
+				//
+				// Brand := detailDoc.Find("tr:contains('Brand')").Find("td").First().Next().Text()
+				//
+				// ratings := detailDoc.Find("span#acrCustomerReviewText.a-size-base").Text()
+				//
+				// Price := detailDoc.Find("tr:contains('Price:')").Find("td span.a-price span.a-offscreen").Text()
+				//
+				// Sales := "belum ada"
 
-				detailResponse, err := http.Get(detailUrl)
-				check(err)
-
-				if detailResponse.StatusCode > 400 {
-					fmt.Println("Status Code: ", response.StatusCode)
-				}
-
-				detailDoc, err := goquery.NewDocumentFromReader(detailResponse.Body)
-				check(err)
-
-				//ambil detail data tiap item
-				title := detailDoc.Find("span.a-size-large").Text()
-
-				asin, _ := detailDoc.Find("div#averageCustomerReviews").Attr("data-asin")
-
-				Brand := detailDoc.Find("tr:contains('Brand')").Find("td").First().Next().Text()
-
-				ratings := detailDoc.Find("span#acrCustomerReviewText.a-size-base").Text()
-
-				Price := detailDoc.Find("tr:contains('Price:')").Find("td span.a-price span.a-offscreen").Text()
-
-				Sales := "belum ada"
-
-				SalesGraph := "belum ada"
-
-				foundUrls = &FoundUrls{
-					ProductDetails: title,
-					Asin: asin,
-					Brand: Brand, 
-					Price: Price, 
-					Ratings: ratings, 
-					Sales: Sales,
-				}
+				// SalesGraph := "belum ada"
+				//
+				// foundUrls = &FoundUrls{
+				// 	ProductDetails: title,
+				// 	Asin:           asin,
+				// 	Brand:          Brand,
+				// 	Price:          Price,
+				// 	Ratings:        ratings,
+				// 	Sales:          Sales,
+				// 	SalesGraph:     SalesGraph,
+				// }
 				// fmt.Println("Product Details: "+title, "asin: "+asin, "brand: "+Brand, "Price: "+Price, "Ratings: "+ratings, "Sales: "+Sales,
-					// "SalesGraph:"+SalesGraph)
+				// "SalesGraph:"+SalesGraph)
 
 			})
 
@@ -147,14 +145,16 @@ func Crawl(targetURL string, baseURL string) []string {
 	links := discoverLinks(response, baseURL)
 	foundUrls := []string{}
 
-	for _, link := range links {
-		ok, correctLinks := resolveRelativeLinks(link, baseURL)
-		if ok {
-			if correctLinks != "" {
-				foundUrls = append(foundUrls, correctLinks)
-			}
-		}
-	}
+	fmt.Println(links)
+
+	// for _, link := range links {
+	// 	ok, correctLinks := resolveRelativeLinks(link, baseURL)
+	// 	if ok {
+	// 		if correctLinks != "" {
+	// 			foundUrls = append(foundUrls, correctLinks)
+	// 		}
+	// 	}
+	// }
 	return foundUrls
 }
 
