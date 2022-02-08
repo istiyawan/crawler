@@ -28,16 +28,16 @@ func main() {
 	// url := "https://www.tokopedia.com"
 	var Brand string
 
-	// response, err := http.Get(url)
-	request, err := http.NewRequest("GET", url, nil)
+	response, err := http.Get(url)
+	// request, err := http.NewRequest("GET", url, nil)
 	check(err)
 
-	request.Header.Set("User-Agent", "Not Firefox")
+	// request.Header.Set("User-Agent", "Not Firefox")
 	// request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	// request.Header.Add("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
 
-	response, err := http.DefaultClient.Do(request)
-	check(err)
+	// response, err := http.DefaultClient.Do(request)
+	// check(err)
 
 	defer response.Body.Close()
 	// slurp, _ := ioutil.ReadAll(response.Body)
