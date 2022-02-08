@@ -51,10 +51,10 @@ func main() {
 	check(err)
 
 	//untuk cek kalo di block
-	// html, err := doc.Find("body").Html()
-	// check(err)
-	//
-	// fmt.Println(html)
+	html, err := doc.Find("body").Html()
+	check(err)
+
+	fmt.Println(html)
 
 	doc.Find("div.s-result-item ").Each(func(index int, item *goquery.Selection) {
 

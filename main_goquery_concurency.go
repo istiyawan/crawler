@@ -12,6 +12,17 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+type FoundUrls struct{
+	
+	ProductDetails string
+	Asin string
+	Brand string 
+	Price string 
+	Ratings string 
+	Sales string 
+
+}
+
 var userAgents = []string{"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/37.0.2062.94 Chrome/37.0.2062.94 Safari/537.36"}
 
 func randomUserAgent() string {
@@ -23,7 +34,8 @@ func randomUserAgent() string {
 func discoverLinks(response *http.Response, baseURL string) []string {
 	if response != nil {
 		doc, _ := goquery.NewDocumentFromResponse(response)
-		foundUrls := []string{}
+		// foundUrls := []string{}
+		foundUrls := &FoundUrls{} 
 
 		if doc != nil {
 			doc.Find("div.s-result-item ").Each(func(index int, item *goquery.Selection) {
@@ -31,37 +43,45 @@ func discoverLinks(response *http.Response, baseURL string) []string {
 				//interasi ke dalam link tiap item
 				mainUrl, _ := item.Find("a.a-link-normal").Attr("href")
 
-				foundUrls = append(foundUrls, mainUrl)
+				// foundUrls = append(foundUrls, mainUrl)
 
-				// detailUrl := "https://www.amazon.com" + mainUrl
-				//
-				// detailResponse, err := http.Get(detailUrl)
-				// check(err)
-				//
-				// if detailResponse.StatusCode > 400 {
-				// 	fmt.Println("Status Code: ", response.StatusCode)
-				// }
-				//
-				// detailDoc, err := goquery.NewDocumentFromReader(detailResponse.Body)
-				// check(err)
-				//
-				// //ambil detail data tiap item
-				// title := detailDoc.Find("span.a-size-large").Text()
-				//
-				// asin, _ := detailDoc.Find("div#averageCustomerReviews").Attr("data-asin")
-				//
-				// Brand = detailDoc.Find("tr:contains('Brand')").Find("td").First().Next().Text()
-				//
-				// ratings := detailDoc.Find("span#acrCustomerReviewText.a-size-base").Text()
-				//
-				// Price := detailDoc.Find("tr:contains('Price:')").Find("td span.a-price span.a-offscreen").Text()
-				//
-				// Sales := "belum ada"
-				//
-				// SalesGraph := "belum ada"
-				//
+				detailUrl := "https://www.amazon.com" + mainUrl
+
+				detailResponse, err := http.Get(detailUrl)
+				check(err)
+
+				if detailResponse.StatusCode > 400 {
+					fmt.Println("Status Code: ", response.StatusCode)
+				}
+
+				detailDoc, err := goquery.NewDocumentFromReader(detailResponse.Body)
+				check(err)
+
+				//ambil detail data tiap item
+				title := detailDoc.Find("span.a-size-large").Text()
+
+				asin, _ := detailDoc.Find("div#averageCustomerReviews").Attr("data-asin")
+
+				Brand := detailDoc.Find("tr:contains('Brand')").Find("td").First().Next().Text()
+
+				ratings := detailDoc.Find("span#acrCustomerReviewText.a-size-base").Text()
+
+				Price := detailDoc.Find("tr:contains('Price:')").Find("td span.a-price span.a-offscreen").Text()
+
+				Sales := "belum ada"
+
+				SalesGraph := "belum ada"
+
+				foundUrls = &FoundUrls{
+					ProductDetails: title,
+					Asin: asin,
+					Brand: Brand, 
+					Price: Price, 
+					Ratings: ratings, 
+					Sales: Sales,
+				}
 				// fmt.Println("Product Details: "+title, "asin: "+asin, "brand: "+Brand, "Price: "+Price, "Ratings: "+ratings, "Sales: "+Sales,
-				// 	"SalesGraph:"+SalesGraph)
+					// "SalesGraph:"+SalesGraph)
 
 			})
 
@@ -159,11 +179,11 @@ func main() {
 	var n int
 	n++
 
-	// url := "https://www.amazon.com/s?k=keyboard&crid=ICSAKQ8GAW3D&sprefix=keybo%2Caps%2C592&ref=nb_sb_noss_2"
-	url := "https://www.guardian.com"
+	url := "https://www.amazon.com/s?k=keyboard&crid=ICSAKQ8GAW3D&sprefix=keybo%2Caps%2C592&ref=nb_sb_noss_2"
+	// url := "https://www.guardian.com"
 	go func() {
-		// worklist <- []string{"https://www.amazon.com/s?k=keyboard&crid=ICSAKQ8GAW3D&sprefix=keybo%2Caps%2C592&ref=nb_sb_noss_2"}
-		worklist <- []string{"https://www.guardian.com"}
+		worklist <- []string{"https://www.amazon.com/s?k=keyboard&crid=ICSAKQ8GAW3D&sprefix=keybo%2Caps%2C592&ref=nb_sb_noss_2"}
+		// worklist <- []string{"https://www.guardian.com"}
 	}()
 
 	seen := make(map[string]bool)
