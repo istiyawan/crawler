@@ -148,8 +148,30 @@ func Crawl(targetURL string, baseURL string) []string {
 	links := discoverLinks(response, baseURL)
 	foundUrls := []string{}
 
-	fmt.Println(links)
+	// fmt.Println(links)
 	// fmt.Println(baseURL)
+
+	for _, link := range links {
+		detailUrl := "https://www.amazon.com"+link
+		// fmt.Println(detailUrl)
+
+		detailResponse, err := http.Get(detailUrl)
+		check(err)
+
+		if detailResponse.StatusCode > 400 {
+			
+			fmt.Println("Status Code: ", response.StatusCode)
+		}
+
+		detailDoc, err := goquery.NewDocumentFromReader(detailResponse.Body)
+		check(err)
+
+
+		// ambil detail data tiap item
+		title := detailDoc.Find("span.a-size-large").Text()
+		fmt.Println(title)
+
+	}
 
 	// for _, link := range links {
 	// 	ok, correctLinks := resolveRelativeLinks(link, baseURL)
