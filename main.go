@@ -33,6 +33,7 @@ func randomUserAgent() string {
 func discoverLinks(response *http.Response, baseURL string) []string {
 	if response != nil {
 		doc, _ := goquery.NewDocumentFromResponse(response)
+
 		foundUrls := []string{}
 
 		if doc != nil {
@@ -40,7 +41,6 @@ func discoverLinks(response *http.Response, baseURL string) []string {
 
 				//interasi ke dalam link tiap item
 				mainUrl, _ := item.Find("a.a-link-normal").Attr("href")
-
 				foundUrls = append(foundUrls, mainUrl)
 				// detailUrl := "https://www.amazon.com" + mainUrl
 				// //
