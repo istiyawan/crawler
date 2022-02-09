@@ -34,7 +34,6 @@ func discoverLinks(response *http.Response, baseURL string) []string {
 	if response != nil {
 		doc, _ := goquery.NewDocumentFromResponse(response)
 		foundUrls := []string{}
-		// foundUrls := &FoundUrls{}
 
 		if doc != nil {
 			doc.Find("div.s-result-item ").Each(func(index int, item *goquery.Selection) {
@@ -44,19 +43,21 @@ func discoverLinks(response *http.Response, baseURL string) []string {
 
 				foundUrls = append(foundUrls, mainUrl)
 				// detailUrl := "https://www.amazon.com" + mainUrl
-				//
+				// //
 				// detailResponse, err := http.Get(detailUrl)
 				// check(err)
-				//
+                //
 				// if detailResponse.StatusCode > 400 {
 				// 	fmt.Println("Status Code: ", response.StatusCode)
 				// }
-				//
+                //
 				// detailDoc, err := goquery.NewDocumentFromReader(detailResponse.Body)
 				// check(err)
-
-				// ambil detail data tiap item
+                //
+				// // ambil detail data tiap item
 				// title := detailDoc.Find("span.a-size-large").Text()
+                //
+				// foundUrls = append(foundUrls, title)
 				// asin, _ := detailDoc.Find("div#averageCustomerReviews").Attr("data-asin")
 				//
 				// Brand := detailDoc.Find("tr:contains('Brand')").Find("td").First().Next().Text()
@@ -84,7 +85,9 @@ func discoverLinks(response *http.Response, baseURL string) []string {
 			})
 
 		}
+
 		return foundUrls
+
 	} else {
 		return []string{}
 	}
@@ -154,7 +157,9 @@ func Crawl(targetURL string, baseURL string) []string {
 	// 			foundUrls = append(foundUrls, correctLinks)
 	// 		}
 	// 	}
+    //
 	// }
+
 	return foundUrls
 }
 
